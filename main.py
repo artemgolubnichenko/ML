@@ -30,12 +30,12 @@ if trace_enabled():
     print(labels_data.shape[0], ' items loaded')
     print(labels_data.head())
 
-y_train, y_test = utils.split_data(labels_data)
+train, test = utils.split_data(labels_data)
 if trace_enabled():
-    print(y_train.shape[0], ' items in train')
-    print(y_train.head())
-    print(y_test.shape[0], ' items in test')
-    print(y_test.head())
+    print(train.shape[0], ' items in train')
+    print(train.head())
+    print(test.shape[0], ' items in test')
+    print(test.head())
 
 
 def fill_targets(row):
@@ -47,15 +47,42 @@ def fill_targets(row):
 
 
 for key in labels.label_names.keys():
-    y_train[labels.label_names[key]] = 0
-    y_test[labels.label_names[key]] = 0
+    train[labels.label_names[key]] = 0
+    test[labels.label_names[key]] = 0
 
 
-y_train = y_train.apply(fill_targets, axis=1)
-y_test = y_test.apply(fill_targets, axis=1)
+train = train.apply(fill_targets, axis=1)
+test = test.apply(fill_targets, axis=1)
 if trace_enabled():
+    print(train.head())
+    print(test.head())
+
+
+X_train = train.iloc[:,0]
+y_train = train.iloc[:, 2:30]
+X_test = test.iloc[:,0]
+y_test = test.iloc[:, 2:30]
+if trace_enabled():
+    print(X_train.head())
     print(y_train.head())
-    print(y_test.head())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def ohe(x, n):
