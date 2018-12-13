@@ -1,12 +1,14 @@
+import os
 import numpy as np
 import tensorflow as tf
 from PIL import Image
 
+import configuration
 import labels
 
 
 def split_data(labels_data):
-    mask = np.random.rand(len(labels_data)) < 0.7
+    mask = np.random.rand(len(labels_data)) < 0.2
     train = labels_data[mask]
     test = labels_data[~mask]
     train = train.reset_index(drop=True)
@@ -22,13 +24,23 @@ def fill_targets(row):
     return row
 
 
-def make_rgb_image_from_four_channels(path, image_width=512, image_height=512) -> np.ndarray:
+def read_image(filename, image_width=512, image_height=512):
+    image_string = tf.read_file(filename)
+    image_decoded = tf.image.decode_png(image_string)
+    image_converted = tf.image.convert_image_dtype(image_decoded, tf.float32)
+    image_reshaped = tf.reshape(image_converted, [image_width, image_height, 1])
+    return image_reshaped
+
+
+def make_rgb_image_from_four_channels(filename, image_width=512, image_height=512) -> np.ndarray:
     """
     It makes literally RGB image from source four channels,
     where yellow image will be yellow color, red will be red and so on
     """
     rgb_image = np.zeros(shape=(image_height, image_width, 3), dtype=np.float)
+    path = os.path.join(configuration.BASE_PATH, filename)
     yellow = np.array(Image.open(path + '_yellow.png'))
+    # yellow = read_image(path + '_yellow.png')
     # yellow is red + green
     rgb_image[:, :, 0] += yellow / 2
     rgb_image[:, :, 1] += yellow / 2
@@ -45,8 +57,9 @@ def make_rgb_image_from_four_channels(path, image_width=512, image_height=512) -
 
 
 def _parse_function(filename, _labels):
-    image_uint8 = make_rgb_image_from_four_channels(filename)
-    return image_uint8, _labels
+    # image = make_rgb_image_from_four_channels(filename)
+    image = read_image(filename)
+    return image, _labels
 
 
 def wrap_to_input_fn(files, _labels, train=True):
