@@ -25,7 +25,7 @@ def fill_targets(row):
 
 
 def read_image(filename, image_width=512, image_height=512):
-    image_string = tf.read_file(filename)
+    image_string = tf.read_file(filename + '_green.png')
     image_decoded = tf.image.decode_png(image_string)
     image_converted = tf.image.convert_image_dtype(image_decoded, tf.float32)
     image_reshaped = tf.reshape(image_converted, [image_width, image_height, 1])

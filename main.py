@@ -43,11 +43,11 @@ log(train.head(), test.head())
 
 X_train = train.iloc[:, 0].values
 for idx, file in enumerate(X_train):
-    X_train[idx] = os.path.join(path_to_train, file + '_green.png')
+    X_train[idx] = os.path.join(path_to_train, file)
 y_train = train.iloc[:, 2:30].values
 X_test = test.iloc[:, 0].values
 for idx, file in enumerate(X_test):
-    X_test[idx] = os.path.join(path_to_train, file + '_green.png')
+    X_test[idx] = os.path.join(path_to_train, file)
 y_test = test.iloc[:, 2:30].values
 log(X_train, y_train)
 
