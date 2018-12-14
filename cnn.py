@@ -21,7 +21,7 @@ def build_model(features, training):
     return dense2
 
 
-def unet_model_fn(features, labels, mode):
+def cnn_model_fn(features, labels, mode):
     if mode == tf.estimator.ModeKeys.TRAIN:
         training = True
     else:

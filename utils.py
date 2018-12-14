@@ -33,9 +33,9 @@ def read_image(filename, image_width=512, image_height=512):
     image_decoded_yellow = tf.image.decode_png(image_string_yellow)
     image = tf.stack((image_decoded_red, image_decoded_green, image_decoded_blue, image_decoded_yellow), -1)
     image_converted = tf.image.convert_image_dtype(image, tf.float32)
-    image_resized = tf.image.resize_images(image_converted, (image_width, image_height))
+    # image_resized = tf.image.resize_images(image_converted, (image_width, image_height))
     # image_resized = tf.image.resize_bilinear(image_converted, [image_width, image_height], align_corners=False)
-    image_reshaped = tf.reshape(image_resized, [image_width, image_height, 4])
+    image_reshaped = tf.reshape(image_converted, [image_width, image_height, 4])
     return image_reshaped
 
 
@@ -64,7 +64,7 @@ def read_image(filename, image_width=512, image_height=512):
 
 
 def _parse_function(filename, _labels):
-    image = read_image(filename, 256, 256)
+    image = read_image(filename, 512, 512)
     return image, _labels
 
 
