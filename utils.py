@@ -65,7 +65,7 @@ def _parse_function(filename, _labels):
 def wrap_to_input_fn(files, _labels, train=True):
     dataset = tf.data.Dataset.from_tensor_slices((files, _labels))
     dataset = dataset.map(_parse_function)
-    dataset = dataset.batch(50)
     if train:
         dataset = dataset.repeat().shuffle(100)
+    dataset = dataset.batch(50)
     return dataset.make_one_shot_iterator().get_next()
