@@ -5,7 +5,7 @@ import configuration
 
 def conv_norm_relu(inputs, filters, kernel_size, training):
     with tf.variable_scope(None, default_name="cnr") as scope:
-        сonv = tf.layers.conv2d(inputs=inputs, filters=filters, kernel_size=kernel_size, activation=tf.nn.relu)
+        сonv = tf.layers.conv2d(inputs=inputs, filters=filters, kernel_size=kernel_size, activation=tf.nn.sigmoid)
         norm = tf.layers.batch_normalization(inputs=сonv, axis=-1, training=training)
         return norm
 
@@ -16,8 +16,8 @@ def build_model(features, training):
     conv_norm_relu2 = conv_norm_relu(pool1, 16, 3, training)
     pool2 = tf.layers.max_pooling2d(inputs=conv_norm_relu2, pool_size=[2, 2], strides=2)
     pool2_flat = tf.reshape(pool2, [-1, 16 * 5 * 5])
-    dense = tf.layers.dense(inputs=pool2_flat, units=1024, activation=tf.nn.relu)
-    dense2 = tf.layers.dense(inputs=dense, units=28, activation=tf.nn.relu)
+    dense = tf.layers.dense(inputs=pool2_flat, units=1024, activation=tf.nn.sigmoid)
+    dense2 = tf.layers.dense(inputs=dense, units=28, activation=tf.nn.sigmoid)
     return dense2
 
 
