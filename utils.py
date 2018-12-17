@@ -40,10 +40,6 @@ def read_image(filename, image_width=512, image_height=512):
 
 
 # def make_rgb_image_from_four_channels(filename, image_width=512, image_height=512) -> np.ndarray:
-#     """
-#     It makes literally RGB image from source four channels,
-#     where yellow image will be yellow color, red will be red and so on
-#     """
 #     rgb_image = np.zeros(shape=(image_height, image_width, 3), dtype=np.float)
 #     path = os.path.join(configuration.BASE_PATH, filename)
 #     yellow = np.array(Image.open(path + '_yellow.png'))

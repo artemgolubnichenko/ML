@@ -1,7 +1,5 @@
 import os
-from glob import glob
 
-import numpy as np
 import pandas as pd
 import tensorflow as tf
 
@@ -60,22 +58,3 @@ eval_spec = tf.estimator.EvalSpec(input_fn=lambda: utils.wrap_to_input_fn(X_test
                                   start_delay_secs=configuration.START_DELAY_SECS,
                                   throttle_secs=configuration.THROTTLE_SECS)
 tf.estimator.train_and_evaluate(classifier, train_spec, eval_spec)
-
-
-
-
-# def load_image(self, path):
-#     R = Image.open(path + '_red.png')
-#     G = Image.open(path + '_green.png')
-#     B = Image.open(path + '_blue.png')
-#     Y = Image.open(path + '_yellow.png')
-#
-#     im = np.stack((
-#         np.array(R),
-#         np.array(G),
-#         np.array(B),
-#         np.array(Y)), -1)
-#
-#     im = cv2.resize(im, (SHAPE[0], SHAPE[1]))
-#     im = np.divide(im, 255)
-#     return im
