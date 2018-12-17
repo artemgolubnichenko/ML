@@ -15,7 +15,7 @@ def build_model(features, training):
     pool1 = tf.layers.max_pooling2d(inputs=conv_norm_relu1, pool_size=[2, 2], strides=2)
     conv_norm_relu2 = conv_norm_relu(pool1, 16, 3, training)
     pool2 = tf.layers.max_pooling2d(inputs=conv_norm_relu2, pool_size=[2, 2], strides=2)
-    pool2_flat = tf.reshape(pool2, [-1, 16 * 5 * 5])
+    pool2_flat = tf.reshape(pool2, [-1, 126 * 126 * 16])
     dense = tf.layers.dense(inputs=pool2_flat, units=1024, activation=tf.nn.sigmoid)
     dense2 = tf.layers.dense(inputs=dense, units=28, activation=tf.nn.sigmoid)
     return dense2
