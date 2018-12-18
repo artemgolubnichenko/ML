@@ -50,6 +50,7 @@ y_test = test.iloc[:, 2:30].values
 log(X_train, y_train)
 
 tf.summary.FileWriterCache.clear()
+tf.logging.set_verbosity('DEBUG')
 classifier = tf.estimator.Estimator(model_fn=cnn.cnn_model_fn, model_dir=configuration.MODEL_DIR)
 
 train_spec = tf.estimator.TrainSpec(input_fn=lambda: utils.wrap_to_input_fn(X_train, y_train),
