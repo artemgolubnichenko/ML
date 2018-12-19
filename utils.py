@@ -23,20 +23,31 @@ def fill_targets(row):
 
 
 def read_image(filename, image_width=512, image_height=512):
-    image_string_red = tf.read_file(filename + '_red.png')
-    image_string_green = tf.read_file(filename + '_green.png')
-    image_string_blue = tf.read_file(filename + '_blue.png')
-    image_string_yellow = tf.read_file(filename + '_yellow.png')
-    image_decoded_red = tf.image.decode_png(image_string_red)
-    image_decoded_green = tf.image.decode_png(image_string_green)
-    image_decoded_blue = tf.image.decode_png(image_string_blue)
-    image_decoded_yellow = tf.image.decode_png(image_string_yellow)
-    image = tf.stack((image_decoded_red, image_decoded_green, image_decoded_blue, image_decoded_yellow), -1)
-    image_converted = tf.image.convert_image_dtype(image, tf.float32)
-    # image_resized = tf.image.resize_images(image_converted, (image_width, image_height))
-    # image_resized = tf.image.resize_bilinear(image_converted, [image_width, image_height], align_corners=False)
-    image_reshaped = tf.reshape(image_converted, [image_width, image_height, 4])
+    channels = ['red', 'green', 'blue', 'yellow']
+    images = []
+    for channel in channels:
+        image_string = tf.read_file(filename + '_' + channel + '.png')
+        image_decoded = tf.image.decode_png(image_string)
+        image_converted = tf.image.convert_image_dtype(image_decoded, tf.float32)
+        images.append(image_converted)
+    image = tf.stack(images, -1)
+    image_reshaped = tf.reshape(image, [image_width, image_height, 4])
     return image_reshaped
+
+    # image_string_red = tf.read_file(filename + '_red.png')
+    # image_string_green = tf.read_file(filename + '_green.png')
+    # image_string_blue = tf.read_file(filename + '_blue.png')
+    # image_string_yellow = tf.read_file(filename + '_yellow.png')
+    # image_decoded_red = tf.image.decode_png(image_string_red)
+    # image_decoded_green = tf.image.decode_png(image_string_green)
+    # image_decoded_blue = tf.image.decode_png(image_string_blue)
+    # image_decoded_yellow = tf.image.decode_png(image_string_yellow)
+    # image = tf.stack((image_decoded_red, image_decoded_green, image_decoded_blue, image_decoded_yellow), -1)
+    # image_converted = tf.image.convert_image_dtype(image, tf.float32)
+    # # image_resized = tf.image.resize_images(image_converted, (image_width, image_height))
+    # # image_resized = tf.image.resize_bilinear(image_converted, [image_width, image_height], align_corners=False)
+    # image_reshaped = tf.reshape(image_converted, [image_width, image_height, 4])
+    # return image_reshaped
 
 
 # def make_rgb_image_from_four_channels(filename, image_width=512, image_height=512) -> np.ndarray:
