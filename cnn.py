@@ -5,7 +5,7 @@ import configuration
 
 def conv_norm_relu(inputs, filters, kernel_size, training):
     with tf.variable_scope(None, default_name="cnr") as scope:
-        сonv = tf.layers.conv2d(inputs=inputs, filters=filters, kernel_size=kernel_size, activation=tf.nn.sigmoid)
+        сonv = tf.layers.conv2d(inputs=inputs, filters=filters, kernel_size=kernel_size, activation=tf.nn.relu)
         norm = tf.layers.batch_normalization(inputs=сonv, axis=-1, training=training)
         return norm
 
