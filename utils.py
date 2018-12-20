@@ -45,5 +45,5 @@ def wrap_to_input_fn(files, _labels, train=True):
     dataset = dataset.map(_parse_function)
     if train:
         dataset = dataset.repeat().shuffle(100)
-    dataset = dataset.batch(50)
+    dataset = dataset.batch(25)
     return dataset.make_one_shot_iterator().get_next()
