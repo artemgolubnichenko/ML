@@ -39,7 +39,7 @@ def cnn_model_fn(features, labels, mode):
         }
         return tf.estimator.EstimatorSpec(mode, predictions=predictions)
 
-    loss = tf.losses.softmax_cross_entropy(onehot_labels=labels, logits=logits)
+    loss = binary_cross_entropy(logits, labels)
 
     accuracy = tf.metrics.accuracy(labels=tf.argmax(labels, axis=1), predictions=predicted_classes, name='acc_op')
     metrics = {'accuracy': accuracy}
@@ -54,3 +54,13 @@ def cnn_model_fn(features, labels, mode):
     with tf.control_dependencies(update_ops):
         train_op = optimizer.minimize(loss, global_step=tf.train.get_global_step())
         return tf.estimator.EstimatorSpec(mode, loss=loss, train_op=train_op)
+
+
+def binary_cross_entropy(logits, labels2, epsilon=1e-8, name='bce_loss'):
+    # For brevity, let `x = logits`, `z = labels`.  The binary cross entropy loss is
+    # loss(x, z) = - sum_i (x[i] * log(z[i]) + (1 - x[i]) * log(1 - z[i]))
+    labels = tf.cast(labels2, tf.float32)
+    return tf.reduce_mean(
+        tf.reduce_sum(-(labels * tf.log(logits + epsilon) + (1. - labels) * tf.log(1. - logits + epsilon)), axis=1),
+        name=name
+    )
